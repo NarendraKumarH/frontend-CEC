@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: aquamarine;
+            font-family: Arial, sans-serif;
+        }
+        form{
+            padding: 50px;
+            margin: 50px;
+            background-color: yellowgreen;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        label{
+            color: rgb(169, 42, 39);
+            background-color: aquamarine;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: small;
+        }
+        .password{
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: medium;
+            color: rgb(19, 203, 99);
+            background-color: rgb(14, 150, 150);
+        }
+        .dell{
+            padding: 10px;
+            margin : 10px;
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+        <li> <a href="forms.html" target="_blank">Forms</a></li>
+        <li> <a href="../day1/HTML/table.html"> Table</a></li>
+        </ul>
+    </nav>
+    <h1 style ="text-align: center; color:rgb(19, 203, 99); background-color: rgb(14, 150, 150);">Basic Form </h1>
+    <form action="/submit" method="post">
+        <label class="dell" for="name">Name:</label>
+        <input type="text" id="name" name="name" required placeholder="enter your name">
+</select>
+<br><br>Table</a></li>
+        </ul>
+    </nav>
+    <form action="/submit" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required placeholder="enter your name">
+</select>
+<br><br>
+
+        <label class="dell" for="email">Email:</label>
+        <input type="email" id="email" name="email" required="en" placeholder="enter your mail id"><br><br>
+
+        <label class="dell" for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" placeholder="enter your phone number "><br><br>
+        <label class="dell" for="gender">Gender:</label>
+        <input type="radio" id="male" name="gender" value="male">
+        <label class="dell" for="male">Male</label>
+        <input type="radio" id="female" name="gender" value="female">
+        <label class="dell" for="female">Female</label><br><br>
+        
+
+        <label class="dell" class or="password">Password:</label>
+        <input type="password" id="password" name="password" required placeholder="enter your password"
+        ><br><br>
+
+        <label  class="dell" for="confirm_password">Confirm Password:</label>
+        <input type="password" id="confirm_password" name="confirm_password" required placeholder="re-enter your password">
+        <br><br>
+
+        <label class="dell" for="age">Age:</label>
+        <input type="number" id="age" name="age" required min="1" max="120"><br><br>
+
+        <label class="dell" for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob"><br><br>
+        <label> <label class="dell" for="department">Department:</label>
+        <select id="department" name="department">
+            <option value="cse">CSE</option>
+            <option value="ece">ECE</option>
+            <option value="eee">EEE</option>
+            <option value="mech">MECH</option>
+            <option value="civil">CIVIL</option>
+            <option value="ise">ISE</option>
+        </select><br><br></label>
+        <label class="dell" for="address">Address:</label><br>
+        <textarea id="address" name="address" rows="4" cols="50" placeholder="enter your address"></textarea><br><br>
+        <label class="dell" for ="video">upload your video</label>
+        <input type="file" id="video" name="video" accept="video/*" required placeholder="upload your video here">
+        <br><br>
+        <lable class="dell" for="file">upload your file</lable>
+        <input type="file" id="file" name="file" accept=".pdf, .doc, .docx" required placeholder="upload your file here">
+        <br><br>
+        <label class="dell" for ="rating ">give your rating:</label>
+        <input type="range" id="rating" name="rating" min="1" max="10" >
+        <br><br>
+        <label class="dell" for="color">Choose your favorite color:</label>
+        <input type="color" id="color" name="color" value="#ff000010">
+        <br><br>
+
+        </label>
+        <h3>Terms and Conditions
+        <input type="checkbox" id="terms" name="terms" required>
+        <label class="dell" for="terms">I agree to the terms and conditions</label><br><br>
+    </h3>
+
+        <input class="dell" type="submit" value="Submit">
+        <input class="dell" type="reset" value="Reset">
+        
+        
+    </form>
+</body>
+</html>
