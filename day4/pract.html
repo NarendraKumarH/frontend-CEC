@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Login Page</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #4e54c8, #8f94fb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      padding: 30px;
+      width: 350px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 15px;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: #4e54c8;
+      box-shadow: 0 0 5px rgba(78, 84, 200, 0.3);
+    }
+
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, #4e54c8, #8f94fb);
+      color: white;
+      border: none;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #3c40a0, #6a6fe5);
+    }
+
+    .details {
+      display: none;
+      margin-top: 20px;
+      text-align: left;
+      background: #f9f9ff;
+      padding: 15px;
+      border-radius: 8px;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Student Login</h2>
+    <form id="loginForm">
+      <input type="text" id="studentId" placeholder="Enter Student ID" required />
+      <input type="password" id="password" placeholder="Enter Password" required />
+      <button type="submit">Login</button>
+      <div id="errorMsg" class="error"></div>
+    </form>
+
+    <div class="details" id="studentDetails">
+      <h3>Student Details</h3>
+      <p><b>Name:</b> <span id="name"></span></p>
+      <p><b>USN:</b> <span id="usn"></span></p>
+      <p><b>Branch:</b> <span id="branch"></span></p>
+      <p><b>Semester:</b> <span id="semester"></span></p>
+      <p><b>Email:</b> <span id="email"></span></p>
+    </div>
+  </div>
+
+  <script>
+    // Sample student database (for demo)
+    const students = [
+      { id: "S101", password: "1234", name: "Narendra Kumar", usn: "1AB22CS001", branch: "CSE", semester: "3", email: "narendra@example.com" },
+      { id: "S102", password: "abcd", name: "Priya Sharma", usn: "1AB22IS002", branch: "ISE", semester: "5", email: "priya@example.com" },
+      { id: "S103", password: "5678", name: "Rahul Verma", usn: "1AB22ME003", branch: "ME", semester: "2", email: "rahul@example.com" }
+    ];
+
+    const form = document.getElementById("loginForm");
+    const errorMsg = document.getElementById("errorMsg");
+    const detailsDiv = document.getElementById("studentDetails");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const id = document.getElementById("studentId").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      const student = students.find(s => s.id === id && s.password === password);
+
+      if (student) {
+        errorMsg.textContent = "";
+        showDetails(student);
+      } else {
+        errorMsg.textContent = "Invalid ID or Password!";
+        detailsDiv.style.display = "none";
+      }
+    });
+
+    function showDetails(student) {
+      document.getElementById("name").textContent = student.name;
+      document.getElementById("usn").textContent = student.usn;
+      document.getElementById("branch").textContent = student.branch;
+      document.getElementById("semester").textContent = student.semester;
+      document.getElementById("email").textContent = student.email;
+      detailsDiv.style.display = "block";
+    }
+  </script>
+</body>
+</html>

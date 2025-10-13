@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mini Web App — Demo</title>
+  <meta name="description" content="Small demo: responsive layout, form validation, dynamic table with localStorage."/>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --accent:#06b6d4;
+      --muted:#94a3b8;
+      --glass: rgba(255,255,255,0.03);
+      --radius:12px;
+      --max-width:1100px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: linear-gradient(180deg,#071023 0%, #07192b 100%);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:24px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      min-height:100vh;
+    }
+
+    .container{
+      width:100%;
+      max-width:var(--max-width);
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:18px;
+      padding:20px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    }
+
+    header{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:16px;
+    }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .logo{
+      width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7c3aed);
+      display:grid;place-items:center;font-weight:700;color:#021018;
+      box-shadow:0 4px 14px rgba(6,182,212,0.12), inset 0 -6px 18px rgba(255,255,255,0.03);
+    }
+    nav{display:flex;gap:12px;align-items:center;}
+    nav a{
+      color:var(--muted);
+      text-decoration:none;
+      font-size:14px;
+      padding:8px 10px;
+      border-radius:8px;
+    }
+    nav a:hover{color:var(--accent);background:var(--glass)}
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:20px;
+    }
+
+    /* HERO + FEATURES */
+    .hero{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:18px;border-radius:var(--radius);
+      box-shadow: 0 6px 18px rgba(2,6,23,0.35);
+    }
+    h1{margin:0 0 8px 0;font-size:22px}
+    p.lead{margin:0;color:var(--muted);line-height:1.5}
+
+    .features{
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
+      gap:12px;
+      margin-top:14px;
+    }
+    .feature{
+      background:rgba(255,255,255,0.02);
+      padding:10px;border-radius:12px;font-size:13px;color:var(--muted);
+      display:flex;flex-direction:column;gap:8px;
+    }
+    .feature b{color:#e6f6fb}
+
+    /* SIDE: form + table */
+    .card{
+      background:var(--card);
+      padding:16px;border-radius:14px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+    form{display:flex;flex-direction:column;gap:10px}
+    label{font-size:13px;color:var(--muted)}
+    input[type="text"], input[type="email"], select{
+      background:transparent;border:1px solid rgba(255,255,255,0.06);
+      padding:10px;border-radius:10px;color:inherit;outline:none;
+    }
+    input[type="text"]:focus, input[type="email"]:focus, select:focus{
+      border-color:var(--accent);
+      box-shadow:0 6px 18px rgba(6,182,212,0.06);
+    }
+    .row{display:flex;gap:10px}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 12px;border-radius:10px;border:0;cursor:pointer;
+      background:linear-gradient(90deg,var(--accent),#7c3aed);color:#021018;font-weight:600;
+    }
+    .btn.ghost{
+      background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);
+    }
+
+    table{
+      width:100%;border-collapse:collapse;margin-top:12px;font-size:13px;
+    }
+    th,td{padding:8px;text-align:left;border-bottom:1px dashed rgba(255,255,255,0.03)}
+    th{color:var(--muted);font-weight:600}
+    .action{
+      display:flex;gap:8px;
+    }
+    .small{
+      font-size:12px;color:var(--muted)
+    }
+
+    footer{margin-top:14px;text-align:center;color:var(--muted);font-size:13px}
+
+    /* responsive */
+    @media (max-width:980px){
+      .grid{grid-template-columns: 1fr;}
+      header{flex-direction:column;align-items:flex-start;gap:12px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-label="Demo application container">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">W</div>
+        <div>
+          <div style="font-weight:700">Web Mini App</div>
+          <div class="small">HTML • CSS • JavaScript demo</div>
+        </div>
+      </div>
+      <nav aria-label="Primary navigation">
+        <a href="#features">Features</a>
+        <a href="#add">Add</a>
+        <a href="#list">List</a>
+      </nav>
+    </header>
+
+    <div class="grid">
+      <section class="hero" id="features" aria-labelledby="hero-title">
+        <h1 id="hero-title">Interactive demo: Add & manage users</h1>
+        <p class="lead">A tiny single-file app showing: accessible form validation, adding rows to a table, deleting rows, and persisting data with localStorage.</p>
+
+        <div class="features" aria-hidden="false">
+          <div class="feature"><b>Accessible</b><span class="small">Labels, focus states, semantic HTML</span></div>
+          <div class="feature"><b>Persistent</b><span class="small">Saved to localStorage</span></div>
+          <div class="feature"><b>Responsive</b><span class="small">Works on small screens</span></div>
+          <div class="feature"><b>Lightweight</b><span class="small">No frameworks</span></div>
+        </div>
+
+        <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.03);margin:12px 0">
+
+        <div>
+          <h3 style="margin:0 0 8px 0">How to use</h3>
+          <ol style="color:var(--muted);margin:0 0 0 18px;padding:0 0 8px 0">
+            <li>Fill the form in the right panel and click <em>Add</em>.</li>
+            <li>Rows appear in the table below; you can delete them.</li>
+            <li>Data is saved in your browser automatically.</li>
+          </ol>
+        </div>
+      </section>
+
+      <aside class="card" id="add" aria-labelledby="form-title">
+        <h2 id="form-title" style="margin:0 0 6px 0;font-size:16px">Add a person</h2>
+        <form id="personForm" novalidate>
+          <div>
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" required placeholder="Full name" />
+            <div id="nameError" class="small" style="display:none;color:#ffb4b4">Please enter a name.</div>
+          </div>
+
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required placeholder="you@example.com" />
+            <div id="emailError" class="small" style="display:none;color:#ffb4b4">Please enter a valid email.</div>
+          </div>
+
+          <div class="row">
+            <div style="flex:1">
+              <label for="role">Role</label>
+              <select id="role" name="role" aria-label="Role">
+                <option value="Student">Student</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Staff">Staff</option>
+              </select>
+            </div>
+            <div style="width:120px">
+              <label for="age">Age</label>
+              <input id="age" name="age" type="text" inputmode="numeric" placeholder="e.g. 21" />
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button type="submit" class="btn" id="addBtn">Add</button>
+            <button type="button" class="btn ghost" id="clearBtn">Clear all</button>
+          </div>
+        </form>
+
+        <div id="list" style="margin-top:14px">
+          <h3 style="margin:0 0 8px 0;font-size:14px">People</h3>
+          <table aria-live="polite" id="peopleTable" role="table">
+            <thead>
+              <tr><th>Name</th><th>Email</th><th>Role</th><th>Age</th><th>Actions</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      <div>Made with ❤️ — copy the file and experiment. Local data stored in <code>localStorage</code>.</div>
+    </footer>
+  </div>
+
+  <script>
+    // Simple, well-commented JS with no dependencies.
+    (function(){
+      const form = document.getElementById('personForm');
+      const tableBody = document.querySelector('#peopleTable tbody');
+      const STORAGE_KEY = 'mini_app_people_v1';
+
+      // validation elements
+      const nameInput = document.getElementById('name');
+      const emailInput = document.getElementById('email');
+      const nameError = document.getElementById('nameError');
+      const emailError = document.getElementById('emailError');
+      const clearBtn = document.getElementById('clearBtn');
+
+      // helpers
+      function readStorage(){
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          return raw ? JSON.parse(raw) : [];
+        } catch(e) { console.warn(e); return [] }
+      }
+      function writeStorage(data){
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      }
+      function sanitize(s){
+        const d = document.createElement('div');
+        d.textContent = s;
+        return d.innerHTML;
+      }
+
+      // render table rows from data array
+      function render(){
+        const people = readStorage();
+        tableBody.innerHTML = '';
+        if(!people.length){
+          const tr = document.createElement('tr');
+          const td = document.createElement('td');
+          td.colSpan = 5;
+          td.className = 'small';
+          td.textContent = 'No entries yet.';
+          tr.appendChild(td);
+          tableBody.appendChild(tr);
+          return;
+        }
+        people.forEach((p, idx) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${sanitize(p.name)}</td>
+            <td>${sanitize(p.email)}</td>
+            <td>${sanitize(p.role)}</td>
+            <td>${sanitize(p.age || '')}</td>
+            <td>
+              <div class="action">
+                <button data-idx="${idx}" class="btn ghost btn-delete" aria-label="Delete ${p.name}">Delete</button>
+              </div>
+            </td>
+          `;
+          tableBody.appendChild(tr);
+        });
+      }
+
+      // delete handler (event delegation)
+      tableBody.addEventListener('click', function(e){
+        const btn = e.target.closest('.btn-delete');
+        if(!btn) return;
+        const idx = Number(btn.getAttribute('data-idx'));
+        let people = readStorage();
+        if(Number.isFinite(idx) && people[idx]){
+          if(confirm('Delete "' + people[idx].name + '"?')) {
+            people.splice(idx,1);
+            writeStorage(people);
+            render();
+          }
+        }
+      });
+
+      // basic validators
+      function isValidEmail(v){
+        // intentionally simple but robust regex for demo
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      }
+      function showError(inputEl, errorEl, show){
+        if(show){ errorEl.style.display = 'block'; inputEl.setAttribute('aria-invalid','true') }
+        else { errorEl.style.display = 'none'; inputEl.removeAttribute('aria-invalid') }
+      }
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const role = document.getElementById('role').value;
+        const age = document.getElementById('age').value.trim();
+
+        let ok = true;
+        if(!name){ showError(nameInput, nameError, true); ok=false } else showError(nameInput, nameError, false);
+        if(!isValidEmail(email)){ showError(emailInput, emailError, true); ok=false } else showError(emailInput, emailError, false);
+
+        if(!ok) return;
+
+        const people = readStorage();
+        people.push({name, email, role, age});
+        writeStorage(people);
+        render();
+
+        // friendly micro-feedback: reset except keep role
+        nameInput.value = '';
+        emailInput.value = '';
+        document.getElementById('age').value = '';
+        nameInput.focus();
+      });
+
+      clearBtn.addEventListener('click', function(){
+        if(confirm('Clear all saved entries?')) {
+          localStorage.removeItem(STORAGE_KEY);
+          render();
+        }
+      });
+
+      // init
+      render();
+
+      // accessibility: focus first input on load
+      window.addEventListener('load', () => nameInput.focus());
+    })();
+  </script>
+</body>
+</html>
